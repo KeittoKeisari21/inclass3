@@ -8,16 +8,15 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('check') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/KeittoKeisari21/inclass3'
+                git branch: 'main', url: 'https://github.com/KeittoKeisari21/inclass3'
             }
         }
 
-        stage('Build') {
+        stage('build') {
             steps {
-                bat 'mvn clean install -DskipTests'
+                bat 'mvn clean install'
             }
         }
 
@@ -29,11 +28,7 @@ pipeline {
 
         stage('JaCoCo') {
             steps {
-                jacoco(
-                    execPattern: 'target/*.exec',
-                    classPattern: 'target/classes',
-                    sourcePattern: 'src/main/java'
-                )
+                jacoco(path:'target/site/jacoco/jacoco.xml')
             }
         }
 
