@@ -4,7 +4,8 @@ pipeline {
         stages {
         stage ('check'){
             steps{
-                git 'https://github.com/KeittoKeisari21/inclass3'
+                git branch 'main',
+                    url: 'https://github.com/KeittoKeisari21/inclass3'
             }
         }
         stage ('build'){
