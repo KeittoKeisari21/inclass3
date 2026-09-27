@@ -27,7 +27,7 @@ pipeline {
 
         stage('JaCoCo') {
             steps {
-                jacoco(path:'target/site/jacoco/jacoco.xml')
+                jacoco(path: 'target/site/jacoco/jacoco.xml')
             }
         }
 
@@ -43,25 +43,11 @@ pipeline {
             }
         }
 
-        stage('Docker Hub Login') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: '9d809128-a80e-4661-a6d0-de88e394dfa7',
-                        usernameVariable: 'DOCKER_USERNAME',
-                        passwordVariable: 'DOCKER_PASSWORD'
-                    )
-                ]) {
-                    bat '''
-                        echo %DOCKER_PASSWORD% | docker login --username %DOCKER_USERNAME% --password-stdin
-                    '''
-                }
-            }
-        }
-
         stage('Push to Docker Hub') {
             steps {
-                bat 'docker push %DOCKER_IMAGE%:latest'
+                withDockerRegistry(credentialsId: '9d809128-a80e-4661-a6d0-de88e394dfa7', url: 'https://index.docker.io/v1/') {
+                    bat 'docker push %DOCKER_IMAGE%:latest'
+                }
             }
         }
     }
