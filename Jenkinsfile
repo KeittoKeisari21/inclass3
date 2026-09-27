@@ -4,7 +4,7 @@ pipeline {
         stages {
         stage ('check'){
             steps{
-                git ''
+                git 'https://github.com/KeittoKeisari21/inclass3.git'
             }
         }
         stage ('build'){
